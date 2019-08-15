@@ -267,10 +267,14 @@ class DragSelectTouchListener private constructor(
         }
 
         if (mode == RANGE &&
-            itemPosition != NO_POSITION &&
             lastDraggedIndex != itemPosition
         ) {
-          lastDraggedIndex = itemPosition
+          lastDraggedIndex = if (itemPosition == NO_POSITION) {
+            if (!view.isTappingLastRow(event)) return
+            receiver.getItemCount()
+          } else {
+            itemPosition
+          }
           if (minReached == -1) minReached = lastDraggedIndex
           if (maxReached == -1) maxReached = lastDraggedIndex
           if (lastDraggedIndex > maxReached) maxReached = lastDraggedIndex

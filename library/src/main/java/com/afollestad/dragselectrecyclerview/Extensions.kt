@@ -16,12 +16,14 @@
 package com.afollestad.dragselectrecyclerview
 
 import android.content.Context
+import android.graphics.Rect
 import android.view.MotionEvent
 import androidx.annotation.DimenRes
 import androidx.annotation.Px
 import androidx.recyclerview.widget.RecyclerView
 
-@Px internal fun Context.dimen(@DimenRes res: Int): Int {
+@Px
+internal fun Context.dimen(@DimenRes res: Int): Int {
   return resources.getDimensionPixelSize(res)
 }
 
@@ -34,4 +36,10 @@ internal fun ListAdapter<*>.isEmpty(): Boolean {
 internal fun RecyclerView.getItemPosition(e: MotionEvent): Int {
   val v = findChildViewUnder(e.x, e.y) ?: return RecyclerView.NO_POSITION
   return getChildAdapterPosition(v)
+}
+
+internal fun RecyclerView.isTappingLastRow(event: MotionEvent): Boolean {
+  val lastCell = adapter?.itemCount?.let { layoutManager?.findViewByPosition(it - 1) } ?: return false
+  val rowRect = Rect().apply { lastCell.getGlobalVisibleRect(this) }
+  return event.y > rowRect.top && event.x > rowRect.right
 }
