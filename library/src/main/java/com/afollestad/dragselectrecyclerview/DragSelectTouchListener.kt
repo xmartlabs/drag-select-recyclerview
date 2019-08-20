@@ -219,7 +219,7 @@ class DragSelectTouchListener private constructor(
       ACTION_MOVE -> {
         if (hotspotHeight > -1) {
           // Check for auto-scroll hotspot
-          if (y >= hotspotTopBoundStart && y <= hotspotTopBoundEnd) {
+          if (y <= hotspotTopBoundEnd) {
             inBottomHotspot = false
             if (!inTopHotspot) {
               inTopHotspot = true
@@ -232,7 +232,7 @@ class DragSelectTouchListener private constructor(
             val simulatedY = y - hotspotTopBoundStart
             autoScrollVelocity = (simulatedFactor - simulatedY).toInt() / 2
             log("Auto scroll velocity = $autoScrollVelocity")
-          } else if (y >= hotspotBottomBoundStart && y <= hotspotBottomBoundEnd) {
+          } else if (y >= hotspotBottomBoundStart) {
             inTopHotspot = false
             if (!inBottomHotspot) {
               inBottomHotspot = true
